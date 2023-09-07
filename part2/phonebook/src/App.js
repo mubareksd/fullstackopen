@@ -51,15 +51,24 @@ const App = () => {
       name: newName,
       number: newNumber,
     };
-    personService.create(personObject).then((returnedPerson) => {
-      setPersons(persons.concat(returnedPerson));
-      setMessage({
-        content: `Added ${returnedPerson.name}`,
-        type: 'success',
+
+    personService
+      .create(personObject)
+      .then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+        setMessage({
+          content: `Added ${returnedPerson.name}`,
+          type: 'success',
+        });
+        setNewName('');
+        setNewNumber('');
+      })
+      .catch((err) => {
+        setMessage({
+          content: `Person validation failed: name Path \`name\` (\`${newName}\`) is shorter than the minimum allowed length (3).`,
+          type: 'error',
+        });
       });
-      setNewName('');
-      setNewNumber('');
-    });
   };
 
   const handleNameChange = (event) => {
